@@ -1,8 +1,7 @@
+FROM ubuntu:18.04 as builder
+
 # must be >= the systemd version on the host
 ENV SYSTEMD_VERSION=242
-ENV GROK_EXPORTER_VERSION=0.2.8
-
-FROM ubuntu:18.04 as builder
 
 RUN apt update && \
     apt install -y wget unzip meson python3-pip m4 gperf libcap-dev pkg-config libmount-dev
@@ -20,6 +19,8 @@ RUN  wget -q https://github.com/systemd/systemd/archive/v${SYSTEMD_VERSION}.zip 
 
 
 FROM ubuntu:18.04
+
+ENV GROK_EXPORTER_VERSION=0.2.8
 
 RUN apt update && \
     apt install -y wget unzip
