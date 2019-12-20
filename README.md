@@ -22,7 +22,7 @@ docker run \
 ```
 
 
-Start with without journalctl
+Start without journalctl
 
 ```bash
 docker run \
