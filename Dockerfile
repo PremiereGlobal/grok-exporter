@@ -1,10 +1,9 @@
 FROM ubuntu:18.04 as builder
 
-# must be >= the systemd version on the host
 ENV SYSTEMD_VERSION=242
 
 RUN apt update && \
-    apt install -y wget unzip meson python3-pip m4 gperf libcap-dev pkg-config libmount-dev
+    apt install -y wget unzip meson python3-pip m4 gperf libcap-dev pkg-config libmount-dev liblz4-dev
 
 RUN pip3 install meson
 
@@ -23,7 +22,7 @@ FROM ubuntu:18.04
 ENV GROK_EXPORTER_VERSION=0.2.8
 
 RUN apt update && \
-    apt install -y wget unzip
+    apt install -y wget unzip libcap-dev liblz4-dev
 
 RUN cd /tmp && \
     wget -q https://github.com/fstab/grok_exporter/releases/download/v${GROK_EXPORTER_VERSION}/grok_exporter-${GROK_EXPORTER_VERSION}.linux-amd64.zip && \
@@ -33,7 +32,6 @@ RUN cd /tmp && \
 
 COPY --from=builder /bin/journalctl /bin
 COPY --from=builder /lib/systemd/libsystemd-* /lib/systemd/
-COPY --from=builder /lib/x86_64-linux-gnu/libcap* /lib/x86_64-linux-gnu/
 
 WORKDIR /grok
 
