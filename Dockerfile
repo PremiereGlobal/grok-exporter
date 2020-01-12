@@ -19,7 +19,7 @@ RUN  wget -q https://github.com/systemd/systemd/archive/v${SYSTEMD_VERSION}.zip 
 
 FROM ubuntu:18.04
 
-ENV GROK_EXPORTER_VERSION=0.2.8
+ENV GROK_EXPORTER_VERSION=1.0.0.RC1
 
 RUN apt update && \
     apt install -y wget unzip libcap-dev liblz4-dev
@@ -35,4 +35,5 @@ COPY --from=builder /lib/systemd/libsystemd-* /lib/systemd/
 
 WORKDIR /grok
 
+# TODO: look into changing the journalctl config to apply the -D by default
 CMD journalctl -f -D /var/log/journal | ./grok_exporter -config /grok/config.yml
